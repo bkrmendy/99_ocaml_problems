@@ -3,6 +3,7 @@ module Lib_ocaml_problems : sig
   val penultimate : 'a list -> 'a option
   val kth_element : 'a list -> int -> 'a option
   val length : 'a list -> int
+  val reverse : 'a list -> 'a list
 end = 
 struct
     let rec last lst = 
@@ -31,4 +32,10 @@ struct
           | (_::rest) -> length1 rest (len + 1) in
       length1 lst 0
 
+    let reverse lst =
+      let rec reverse1 lst1 acc = 
+        match lst1 with
+          | [] -> acc
+          | (head::rest) -> reverse1 rest (head::acc) in
+      reverse1 lst []
 end
