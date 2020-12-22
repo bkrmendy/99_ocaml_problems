@@ -1,2 +1,2 @@
 (library
- (name lib_ocaml_problems))
+ (name Lib_ocaml_problems))

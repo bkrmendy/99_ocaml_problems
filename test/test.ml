@@ -1,10 +1,14 @@
 open OUnit2
+open Lib_ocaml_problems
 
-let test_example _ = assert_equal 1 1
-
+let test_list_last _ =
+  assert_equal None (Lib_ocaml_problems.last []);
+  assert_equal (Some 1) (Lib_ocaml_problems.last [1]);
+  assert_equal (Some 2) (Lib_ocaml_problems.last [1 ; 2])
+  
 let suite = 
-  "ExampleTests" >::: [
-    "test_example" >:: test_example;
+  "OcamlProblemsTests" >::: [
+    "test_list_last" >:: test_list_last;
   ]
 
 let () = run_test_tt_main suite
