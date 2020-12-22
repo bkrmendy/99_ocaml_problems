@@ -24,6 +24,8 @@ module Lib_ocaml_problems : sig
   val duplicate : 'a list -> 'a list
   val replicate : 'a list -> int -> 'a list
   val drop : 'a list -> int -> 'a list
+  val split : 'a list -> int -> 'a list * 'a list
+  val slice : 'a list -> int -> int -> 'a list
 end = 
 struct
   let rec last lst = 
@@ -155,4 +157,26 @@ struct
           | (_::rest, 0) -> (aux rest acc n)
           | (head::rest, cx) -> (aux rest (head::acc) (cx - 1)) in
       aux lst [] n |> List.rev
+
+    let split lst at = 
+      let rec aux lst2 acc at =
+        match at with
+          | 0 -> (List.rev acc, lst2)
+          | n ->
+            match lst2 with
+              | [] -> (List.rev acc, [])
+              | (head::rest) -> aux rest (head::acc) (n-1) in
+      aux lst [] at
+
+    let rec take lst n =
+      match (lst, n) with
+        | ([], _) -> []
+        | (_, 0) -> []
+        | (head::rest, c) -> head::(take rest (c - 1))
+
+    let rec slice lst from until =
+      match (lst, from) with
+        | ([], _) -> []
+        | (_, 0) -> take lst (until - from + 1)
+        | (_::rest, _) -> slice rest (from - 1) (until - 1)
 end
