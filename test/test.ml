@@ -118,11 +118,11 @@ let test_replicate _ =
   assert_equal [3; 3; 3] (Lib_ocaml_problems.replicate [3] 3);
   assert_equal ["a"; "a"; "a"; "b"; "b"; "b"; "c"; "c"; "c"] (Lib_ocaml_problems.replicate ["a"; "b"; "c"] 3)
 
-let test_drop _ =
-  assert_equal [] (Lib_ocaml_problems.drop [] 0);
-  assert_equal [] (Lib_ocaml_problems.drop [1] 0);
-  assert_equal [1] (Lib_ocaml_problems.drop [1; 2] 1);
-  assert_equal ["a"; "b"; "c"; "e"; "f"; "g"; "i"; "j"] (Lib_ocaml_problems.drop ["a";"b";"c";"d";"e";"f";"g";"h";"i";"j"] 3)
+let test_drop_nth _ =
+  assert_equal [] (Lib_ocaml_problems.drop_nth [] 0);
+  assert_equal [] (Lib_ocaml_problems.drop_nth [1] 0);
+  assert_equal [1] (Lib_ocaml_problems.drop_nth [1; 2] 1);
+  assert_equal ["a"; "b"; "c"; "e"; "f"; "g"; "i"; "j"] (Lib_ocaml_problems.drop_nth ["a";"b";"c";"d";"e";"f";"g";"h";"i";"j"] 3)
 
 let test_split _ =
   assert_equal ([], []) (Lib_ocaml_problems.split [] 0);
@@ -134,6 +134,13 @@ let test_split _ =
 
 let test_slice _ =
   assert_equal ["c"; "d"; "e"; "f"; "g"] (Lib_ocaml_problems.slice ["a";"b";"c";"d";"e";"f";"g";"h";"i";"j"] 2 6)
+
+let test_rotate _ =
+  assert_equal [1;2;3;4] (Lib_ocaml_problems.rotate [1;2;3;4] 0);
+  assert_equal [2;3;4;1] (Lib_ocaml_problems.rotate [1;2;3;4] 1);
+  assert_equal [4;1;2;3] (Lib_ocaml_problems.rotate [1;2;3;4] (-1));
+  assert_equal ["d"; "e"; "f"; "g"; "h"; "a"; "b"; "c"] (Lib_ocaml_problems.rotate ["a"; "b"; "c"; "d"; "e"; "f"; "g"; "h"] 3);
+  assert_equal ["g"; "h"; "a"; "b"; "c"; "d"; "e"; "f"] (Lib_ocaml_problems.rotate ["a"; "b"; "c"; "d"; "e"; "f"; "g"; "h"] (-2))
   
 let suite = 
   "OcamlProblemsTests" >::: [
@@ -151,9 +158,10 @@ let suite =
     "test_decode" >:: test_decode;
     "test_duplicate" >:: test_duplicate;
     "test_replicate" >:: test_replicate;
-    "test_drop" >:: test_drop;
+    "test_drop_nth" >:: test_drop_nth;
     "test_split" >:: test_split;
-    "test_slice" >:: test_slice
+    "test_slice" >:: test_slice;
+    "test_rotate" >:: test_rotate
   ]
 
 let () = run_test_tt_main suite

@@ -23,9 +23,10 @@ module Lib_ocaml_problems : sig
   val decode : 'a rle list -> 'a list
   val duplicate : 'a list -> 'a list
   val replicate : 'a list -> int -> 'a list
-  val drop : 'a list -> int -> 'a list
+  val drop_nth : 'a list -> int -> 'a list
   val split : 'a list -> int -> 'a list * 'a list
   val slice : 'a list -> int -> int -> 'a list
+  val rotate : 'a list -> int -> 'a list
 end = 
 struct
   let rec last lst = 
@@ -150,7 +151,7 @@ struct
           | [] -> []
           | (head::rest) -> List.concat [(repeat head n); (replicate rest n)]
 
-    let drop lst n = 
+    let drop_nth lst n = 
       let rec aux lst acc c =
         match (lst, c) with
           | ([], _) -> acc
@@ -172,11 +173,25 @@ struct
       match (lst, n) with
         | ([], _) -> []
         | (_, 0) -> []
-        | (head::rest, c) -> head::(take rest (c - 1))
+        | (head::rest, _) -> head::(take rest (n - 1))
+
+    let rec drop lst n =
+      match (lst, n) with
+        | ([], _) -> []
+        | (_, 0) -> lst
+        | (_::rest, c) -> drop rest (c - 1)
 
     let rec slice lst from until =
       match (lst, from) with
         | ([], _) -> []
         | (_, 0) -> take lst (until - from + 1)
         | (_::rest, _) -> slice rest (from - 1) (until - 1)
+
+    let rotate lst by =
+      let n = if by > 0 then
+        by
+      else
+        (length lst) + by in
+        List.concat [drop lst n; take lst n]
+        
 end
