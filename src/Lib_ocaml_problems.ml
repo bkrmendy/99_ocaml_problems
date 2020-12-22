@@ -21,6 +21,7 @@ module Lib_ocaml_problems : sig
   val encode : 'a list -> (int * 'a) list
   val encode_adt : 'a list -> 'a rle list
   val decode : 'a rle list -> 'a list
+  val duplicate : 'a list -> 'a list
 end = 
 struct
   let rec last lst = 
@@ -132,4 +133,9 @@ struct
         | ((Multiple (n, value))::rest) -> decode2 rest (List.concat [(repeat value n); acc])
 
     let decode lst = decode2 lst [] |> List.rev
+
+    let rec duplicate lst =
+      match lst with
+        | [] -> []
+        | (head::rest) -> (head::head::(duplicate rest))
 end
