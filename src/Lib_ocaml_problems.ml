@@ -13,6 +13,7 @@ module Lib_ocaml_problems : sig
   val is_palindrome : 'a list -> bool
   val flatten : 'a node list -> 'a list
   val compress : 'a list -> 'a list
+  val pack : 'a list -> 'a list list
 end = 
 struct
   let rec last lst = 
@@ -63,5 +64,20 @@ struct
         | [] -> []
         | (head::[]) -> [head]
         | (a::b::rest) -> if a = b then compress (a::rest) else (a::(compress (b::rest)))
+    
+    let rec pack2 lst acc =
+      match lst with
+        | [] -> acc
+        | (head::rest) ->
+          match acc with
+            | [] -> pack2 rest [[head]]
+            | ([]::arest) -> pack2 rest ([head]::arest)
+            | ((re::rrest)::arest) ->
+              if re = head then
+                pack2 rest ((head::re::rrest)::arest)
+              else
+                pack2 lst ([]::acc)
 
+    let pack lst = List.rev (pack2 lst [])
+      
 end
