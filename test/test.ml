@@ -30,6 +30,11 @@ let test_reverse _ =
   assert_equal [] (Lib_ocaml_problems.reverse []);
   assert_equal [1] (Lib_ocaml_problems.reverse [1]);
   assert_equal [2; 1] (Lib_ocaml_problems.reverse [1; 2])
+
+let test_palindrome _ =
+  assert_equal true (Lib_ocaml_problems.is_palindrome [1; 2; 1]);
+  assert_equal true (Lib_ocaml_problems.is_palindrome [1; 2; 2; 1]);
+  assert_equal false (Lib_ocaml_problems.is_palindrome [1; 2; 2])
   
 let suite = 
   "OcamlProblemsTests" >::: [
@@ -37,7 +42,8 @@ let suite =
     "test_penultimate" >:: test_penultimate;
     "test_kth_element" >:: test_kth_element;
     "test_length" >:: test_length;
-    "test_reverse" >:: test_reverse
+    "test_reverse" >:: test_reverse;
+    "test_palindrome" >:: test_palindrome
   ]
 
 let () = run_test_tt_main suite

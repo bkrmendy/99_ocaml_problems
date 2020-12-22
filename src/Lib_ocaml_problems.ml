@@ -4,6 +4,7 @@ module Lib_ocaml_problems : sig
   val kth_element : 'a list -> int -> 'a option
   val length : 'a list -> int
   val reverse : 'a list -> 'a list
+  val is_palindrome : 'a list -> bool
 end = 
 struct
     let rec last lst = 
@@ -38,4 +39,8 @@ struct
           | [] -> acc
           | (head::rest) -> reverse1 rest (head::acc) in
       reverse1 lst []
+
+    let is_palindrome lst =
+      let rev = reverse lst in
+      lst = rev
 end
