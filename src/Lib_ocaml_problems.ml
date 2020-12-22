@@ -1,3 +1,9 @@
+open List
+
+type 'a node =
+    | One of 'a
+    | Many of 'a node list;;
+
 module Lib_ocaml_problems : sig
   val last : 'a list -> 'a option
   val penultimate : 'a list -> 'a option
@@ -5,9 +11,11 @@ module Lib_ocaml_problems : sig
   val length : 'a list -> int
   val reverse : 'a list -> 'a list
   val is_palindrome : 'a list -> bool
+  val flatten : 'a node list -> 'a list
+  val compress : 'a list -> 'a list
 end = 
 struct
-    let rec last lst = 
+  let rec last lst = 
       match lst with
         | [] -> None
         | (head::[]) -> Some head
@@ -43,4 +51,17 @@ struct
     let is_palindrome lst =
       let rev = reverse lst in
       lst = rev
+
+    let rec flatten lst =
+      match lst with
+        | [] -> []
+        | ((One elem)::rest) -> List.concat [[elem]; (flatten rest)]
+        | ((Many elems)::rest) -> List.concat [(flatten elems); (flatten rest)]
+
+    let rec compress lst =
+      match lst with
+        | [] -> []
+        | (head::[]) -> [head]
+        | (a::b::rest) -> if a = b then compress (a::rest) else (a::(compress (b::rest)))
+
 end

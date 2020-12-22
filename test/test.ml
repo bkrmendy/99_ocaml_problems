@@ -43,6 +43,23 @@ let test_palindrome _ =
   assert_equal true (Lib_ocaml_problems.is_palindrome [ "x" ; "a" ; "m" ; "a" ; "x" ]);
   assert_equal false (Lib_ocaml_problems.is_palindrome [1; 2; 2]);
   assert_equal false (Lib_ocaml_problems.is_palindrome [ "a" ; "b" ])
+
+let test_flatten _ =
+  assert_equal [] (Lib_ocaml_problems.flatten []);
+  assert_equal [1] (Lib_ocaml_problems.flatten [One 1]);
+  assert_equal [1; 2] (Lib_ocaml_problems.flatten [One 1; One 2]);
+  assert_equal [1; 2] (Lib_ocaml_problems.flatten [Many [One 1; One 2]]);
+  assert_equal ["a"; "b"; "c"; "d"; "e"] (Lib_ocaml_problems.flatten [ One "a" ; Many [ One "b" ; Many [ One "c" ; One "d" ] ; One "e" ] ])
+
+let test_compress _ =
+  assert_equal [] (Lib_ocaml_problems.compress []);
+  assert_equal [1] (Lib_ocaml_problems.compress [1]);
+  assert_equal [1] (Lib_ocaml_problems.compress [1; 1]);
+  assert_equal [1] (Lib_ocaml_problems.compress [1; 1; 1]);
+  assert_equal [1; 2] (Lib_ocaml_problems.compress [1; 2]);
+  assert_equal [1; 2] (Lib_ocaml_problems.compress [1; 1; 2]);
+  assert_equal [1; 2] (Lib_ocaml_problems.compress [1; 1; 2; 2]);
+  assert_equal ["a"; "b"; "c"; "a"; "d"; "e"] (Lib_ocaml_problems.compress ["a";"a";"a";"a";"b";"c";"c";"a";"a";"d";"e";"e";"e";"e"])
   
 let suite = 
   "OcamlProblemsTests" >::: [
@@ -51,7 +68,9 @@ let suite =
     "test_kth_element" >:: test_kth_element;
     "test_length" >:: test_length;
     "test_reverse" >:: test_reverse;
-    "test_palindrome" >:: test_palindrome
+    "test_palindrome" >:: test_palindrome;
+    "test_flatten" >:: test_flatten;
+    "test_compress" >:: test_compress
   ]
 
 let () = run_test_tt_main suite
