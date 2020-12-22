@@ -14,6 +14,7 @@ module Lib_ocaml_problems : sig
   val flatten : 'a node list -> 'a list
   val compress : 'a list -> 'a list
   val pack : 'a list -> 'a list list
+  val encode : 'a list -> (int * 'a) list
 end = 
 struct
   let rec last lst = 
@@ -78,6 +79,20 @@ struct
               else
                 pack2 lst ([]::acc)
 
-    let pack lst = List.rev (pack2 lst [])
+    let pack lst = pack2 lst [] |> List.rev
+
+    let rec encode2 lst acc =
+      match lst with
+        | [] -> acc
+        | (head::rest) ->
+          match acc with
+            | [] -> encode2 rest [(1, head)]
+            | ((n, value)::arest) ->
+              if value = head then
+                encode2 rest ((n + 1, value)::arest)
+              else
+                encode2 rest ((1, head)::acc)
+
+    let encode lst = encode2 lst [] |> List.rev
       
 end

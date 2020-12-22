@@ -72,6 +72,19 @@ let test_pack _ =
   assert_equal
     [["a"; "a"; "a"; "a"]; ["b"]; ["c"; "c"]; ["a"; "a"]; ["d"; "d"]; ["e"; "e"; "e"; "e"]]
     (Lib_ocaml_problems.pack ["a";"a";"a";"a";"b";"c";"c";"a";"a";"d";"d";"e";"e";"e";"e"])
+
+let test_encode _ =
+  assert_equal [] (Lib_ocaml_problems.encode []);
+  assert_equal [(1, 1)] (Lib_ocaml_problems.encode [1]);
+  assert_equal [(2, 1)] (Lib_ocaml_problems.encode [1; 1]);
+  assert_equal [(1, 1); (1, 2)] (Lib_ocaml_problems.encode [1; 2]);
+  assert_equal [(1, 1); (2, 2)] (Lib_ocaml_problems.encode [1; 2; 2]);
+  assert_equal [(1, 1); (2, 2); (1, 3)] (Lib_ocaml_problems.encode [1; 2; 2; 3]);
+  assert_equal
+    [(4, "a"); (1, "b"); (2, "c"); (2, "a"); (1, "d"); (4, "e")]
+    (Lib_ocaml_problems.encode ["a";"a";"a";"a";"b";"c";"c";"a";"a";"d";"e";"e";"e";"e"])
+
+
   
 let suite = 
   "OcamlProblemsTests" >::: [
@@ -83,7 +96,8 @@ let suite =
     "test_palindrome" >:: test_palindrome;
     "test_flatten" >:: test_flatten;
     "test_compress" >:: test_compress;
-    "test_pack" >:: test_pack
+    "test_pack" >:: test_pack;
+    "test_encode" >:: test_encode
   ]
 
 let () = run_test_tt_main suite
