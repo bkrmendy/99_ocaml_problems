@@ -110,6 +110,13 @@ let test_duplicate _ =
     assert_equal [] (Lib_ocaml_problems.duplicate []);
     assert_equal [1; 1] (Lib_ocaml_problems.duplicate [1]);
     assert_equal ["a"; "a"; "b"; "b"; "c"; "c"; "c"; "c"; "d"; "d"] (Lib_ocaml_problems.duplicate ["a";"b";"c";"c";"d"])
+
+let test_replicate _ = 
+    assert_equal [] (Lib_ocaml_problems.replicate [] 0);
+    assert_equal [] (Lib_ocaml_problems.replicate [] 1);
+    assert_equal (Lib_ocaml_problems.duplicate [1]) (Lib_ocaml_problems.replicate [1] 2);
+    assert_equal [3; 3; 3] (Lib_ocaml_problems.replicate [3] 3);
+    assert_equal ["a"; "a"; "a"; "b"; "b"; "b"; "c"; "c"; "c"] (Lib_ocaml_problems.replicate ["a"; "b"; "c"] 3)
   
 let suite = 
   "OcamlProblemsTests" >::: [
@@ -125,7 +132,8 @@ let suite =
     "test_encode" >:: test_encode;
     "test_encode_adt" >:: test_encode_adt;
     "test_decode" >:: test_decode;
-    "test_duplicate" >:: test_duplicate
+    "test_duplicate" >:: test_duplicate;
+    "test_replicate" >:: test_replicate
   ]
 
 let () = run_test_tt_main suite
