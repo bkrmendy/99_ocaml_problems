@@ -23,6 +23,7 @@ module Lib_ocaml_problems : sig
   val decode : 'a rle list -> 'a list
   val duplicate : 'a list -> 'a list
   val replicate : 'a list -> int -> 'a list
+  val drop : 'a list -> int -> 'a list
 end = 
 struct
   let rec last lst = 
@@ -146,4 +147,12 @@ struct
         match lst with
           | [] -> []
           | (head::rest) -> List.concat [(repeat head n); (replicate rest n)]
+
+    let drop lst n = 
+      let rec aux lst acc c =
+        match (lst, c) with
+          | ([], _) -> acc
+          | (_::rest, 0) -> (aux rest acc n)
+          | (head::rest, cx) -> (aux rest (head::acc) (cx - 1)) in
+      aux lst [] n |> List.rev
 end

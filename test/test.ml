@@ -107,16 +107,22 @@ let test_decode _ =
     (Lib_ocaml_problems.decode [Multiple (4, "a"); Single "b"; Multiple (2, "c"); Multiple (2, "a"); Single "d"; Multiple (4, "e")])
 
 let test_duplicate _ = 
-    assert_equal [] (Lib_ocaml_problems.duplicate []);
-    assert_equal [1; 1] (Lib_ocaml_problems.duplicate [1]);
-    assert_equal ["a"; "a"; "b"; "b"; "c"; "c"; "c"; "c"; "d"; "d"] (Lib_ocaml_problems.duplicate ["a";"b";"c";"c";"d"])
+  assert_equal [] (Lib_ocaml_problems.duplicate []);
+  assert_equal [1; 1] (Lib_ocaml_problems.duplicate [1]);
+  assert_equal ["a"; "a"; "b"; "b"; "c"; "c"; "c"; "c"; "d"; "d"] (Lib_ocaml_problems.duplicate ["a";"b";"c";"c";"d"])
 
 let test_replicate _ = 
-    assert_equal [] (Lib_ocaml_problems.replicate [] 0);
-    assert_equal [] (Lib_ocaml_problems.replicate [] 1);
-    assert_equal (Lib_ocaml_problems.duplicate [1]) (Lib_ocaml_problems.replicate [1] 2);
-    assert_equal [3; 3; 3] (Lib_ocaml_problems.replicate [3] 3);
-    assert_equal ["a"; "a"; "a"; "b"; "b"; "b"; "c"; "c"; "c"] (Lib_ocaml_problems.replicate ["a"; "b"; "c"] 3)
+  assert_equal [] (Lib_ocaml_problems.replicate [] 0);
+  assert_equal [] (Lib_ocaml_problems.replicate [] 1);
+  assert_equal (Lib_ocaml_problems.duplicate [1]) (Lib_ocaml_problems.replicate [1] 2);
+  assert_equal [3; 3; 3] (Lib_ocaml_problems.replicate [3] 3);
+  assert_equal ["a"; "a"; "a"; "b"; "b"; "b"; "c"; "c"; "c"] (Lib_ocaml_problems.replicate ["a"; "b"; "c"] 3)
+
+let test_drop _ =
+  assert_equal [] (Lib_ocaml_problems.drop [] 0);
+  assert_equal [] (Lib_ocaml_problems.drop [1] 0);
+  assert_equal [1] (Lib_ocaml_problems.drop [1; 2] 1);
+  assert_equal ["a"; "b"; "c"; "e"; "f"; "g"; "i"; "j"] (Lib_ocaml_problems.drop ["a";"b";"c";"d";"e";"f";"g";"h";"i";"j"] 3)
   
 let suite = 
   "OcamlProblemsTests" >::: [
@@ -133,7 +139,8 @@ let suite =
     "test_encode_adt" >:: test_encode_adt;
     "test_decode" >:: test_decode;
     "test_duplicate" >:: test_duplicate;
-    "test_replicate" >:: test_replicate
+    "test_replicate" >:: test_replicate;
+    "test_drop" >:: test_drop
   ]
 
 let () = run_test_tt_main suite
