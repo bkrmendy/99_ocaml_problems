@@ -89,11 +89,22 @@ let test_encode_adt _ =
   assert_equal [Single 1] (Lib_ocaml_problems.encode_adt [1]);
   assert_equal [Multiple (2, "a")] (Lib_ocaml_problems.encode_adt ["a"; "a"]);
   assert_equal [Single 1; Single 2] (Lib_ocaml_problems.encode_adt [1; 2]);
-  assert_equal [Single 1; Multiple (2, 1)] (Lib_ocaml_problems.encode_adt [1; 2; 2]);
+  assert_equal [Single 1; Multiple (2, 2)] (Lib_ocaml_problems.encode_adt [1; 2; 2]);
   assert_equal [Single 1; Multiple (2, 2); Single 3] (Lib_ocaml_problems.encode_adt [1; 2; 2; 3]);
   assert_equal
     [Multiple (4, "a"); Single "b"; Multiple (2, "c"); Multiple (2, "a"); Single "d"; Multiple (4, "e")]
     (Lib_ocaml_problems.encode_adt ["a";"a";"a";"a";"b";"c";"c";"a";"a";"d";"e";"e";"e";"e"])
+
+let test_decode _ =
+  assert_equal [] (Lib_ocaml_problems.decode []);
+  assert_equal [1] (Lib_ocaml_problems.decode [Single 1]);
+  assert_equal ["a"; "a"] (Lib_ocaml_problems.decode [Multiple (2, "a")]);
+  assert_equal [1; 2] (Lib_ocaml_problems.decode [Single 1; Single 2]);
+  assert_equal [1; 2; 2] (Lib_ocaml_problems.decode [Single 1; Multiple (2, 2)]);
+  assert_equal [1; 2; 2; 3] (Lib_ocaml_problems.decode [Single 1; Multiple (2, 2); Single 3]);
+  assert_equal
+  ["a";"a";"a";"a";"b";"c";"c";"a";"a";"d";"e";"e";"e";"e"]
+    (Lib_ocaml_problems.decode [Multiple (4, "a"); Single "b"; Multiple (2, "c"); Multiple (2, "a"); Single "d"; Multiple (4, "e")])
   
 let suite = 
   "OcamlProblemsTests" >::: [
@@ -106,7 +117,9 @@ let suite =
     "test_flatten" >:: test_flatten;
     "test_compress" >:: test_compress;
     "test_pack" >:: test_pack;
-    "test_encode" >:: test_encode
+    "test_encode" >:: test_encode;
+    "test_encode_adt" >:: test_encode_adt;
+    "test_decode" >:: test_decode
   ]
 
 let () = run_test_tt_main suite

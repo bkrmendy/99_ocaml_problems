@@ -20,6 +20,7 @@ module Lib_ocaml_problems : sig
   val pack : 'a list -> 'a list list
   val encode : 'a list -> (int * 'a) list
   val encode_adt : 'a list -> 'a rle list
+  val decode : 'a rle list -> 'a list
 end = 
 struct
   let rec last lst = 
@@ -117,5 +118,18 @@ struct
               else
                 encode_adt2 rest ((Single head)::acc)
 
-    let encode_adt lst = encode_adt2 lst []
+    let encode_adt lst = encode_adt2 lst [] |> List.rev
+
+    let rec repeat value times =
+      match times with
+        | 0 -> []
+        | n -> value::(repeat value (n - 1))
+
+    let rec decode2 lst acc =
+      match lst with
+        | [] -> acc
+        | ((Single value)::rest) -> decode2 rest (value::acc)
+        | ((Multiple (n, value))::rest) -> decode2 rest (List.concat [(repeat value n); acc])
+
+    let decode lst = decode2 lst [] |> List.rev
 end
