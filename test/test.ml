@@ -84,7 +84,16 @@ let test_encode _ =
     [(4, "a"); (1, "b"); (2, "c"); (2, "a"); (1, "d"); (4, "e")]
     (Lib_ocaml_problems.encode ["a";"a";"a";"a";"b";"c";"c";"a";"a";"d";"e";"e";"e";"e"])
 
-
+let test_encode_adt _ =
+  assert_equal [] (Lib_ocaml_problems.encode_adt []);
+  assert_equal [Single 1] (Lib_ocaml_problems.encode_adt [1]);
+  assert_equal [Multiple (2, "a")] (Lib_ocaml_problems.encode_adt ["a"; "a"]);
+  assert_equal [Single 1; Single 2] (Lib_ocaml_problems.encode_adt [1; 2]);
+  assert_equal [Single 1; Multiple (2, 1)] (Lib_ocaml_problems.encode_adt [1; 2; 2]);
+  assert_equal [Single 1; Multiple (2, 2); Single 3] (Lib_ocaml_problems.encode_adt [1; 2; 2; 3]);
+  assert_equal
+    [Multiple (4, "a"); Single "b"; Multiple (2, "c"); Multiple (2, "a"); Single "d"; Multiple (4, "e")]
+    (Lib_ocaml_problems.encode_adt ["a";"a";"a";"a";"b";"c";"c";"a";"a";"d";"e";"e";"e";"e"])
   
 let suite = 
   "OcamlProblemsTests" >::: [

@@ -1,5 +1,9 @@
 open List
 
+type 'a rle = 
+    | Single of 'a
+    | Multiple of int * 'a;;
+
 type 'a node =
     | One of 'a
     | Many of 'a node list;;
@@ -15,6 +19,7 @@ module Lib_ocaml_problems : sig
   val compress : 'a list -> 'a list
   val pack : 'a list -> 'a list list
   val encode : 'a list -> (int * 'a) list
+  val encode_adt : 'a list -> 'a rle list
 end = 
 struct
   let rec last lst = 
@@ -94,5 +99,23 @@ struct
                 encode2 rest ((1, head)::acc)
 
     let encode lst = encode2 lst [] |> List.rev
-      
+
+    let rec encode_adt2 lst acc =
+      match lst with
+        | [] -> acc
+        | (head::rest) ->
+          match acc with
+            | [] -> encode_adt2 rest [(Single head)]
+            | ((Single value)::arest) ->
+              if value = head then
+                encode_adt2 rest ((Multiple (2, head))::arest)
+              else
+                encode_adt2 rest ((Single head)::acc)
+            | ((Multiple (n, value))::arest) ->
+              if value = head then
+                encode_adt2 rest ((Multiple (n + 1, head))::arest)
+              else
+                encode_adt2 rest ((Single head)::acc)
+
+    let encode_adt lst = encode_adt2 lst []
 end
