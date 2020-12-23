@@ -27,6 +27,7 @@ module Lib_ocaml_problems : sig
   val split : 'a list -> int -> 'a list * 'a list
   val slice : 'a list -> int -> int -> 'a list
   val rotate : 'a list -> int -> 'a list
+  val remove_at : 'a list -> int -> 'a list
 end = 
 struct
   let rec last lst = 
@@ -193,5 +194,12 @@ struct
       else
         (length lst) + by in
         List.concat [drop lst n; take lst n]
+
+    let rec remove_at lst idx =
+      match (lst, idx) with
+        | ([], _) -> []
+        | (_::rest, 0) -> rest
+        | (head::rest, _) -> head::(remove_at rest (idx - 1))
+    
         
 end
