@@ -112,6 +112,7 @@ let test_duplicate _ =
   assert_equal ["a"; "a"; "b"; "b"; "c"; "c"; "c"; "c"; "d"; "d"] (Lib_ocaml_problems.duplicate ["a";"b";"c";"c";"d"])
 
 let test_replicate _ = 
+  assert_equal [] (Lib_ocaml_problems.replicate [1;2;3;4;5] (-2));
   assert_equal [] (Lib_ocaml_problems.replicate [] 0);
   assert_equal [] (Lib_ocaml_problems.replicate [] 1);
   assert_equal (Lib_ocaml_problems.duplicate [1]) (Lib_ocaml_problems.replicate [1] 2);
@@ -133,6 +134,7 @@ let test_split _ =
   assert_equal (["a"; "b"; "c"; "d"], []) (Lib_ocaml_problems.split ["a";"b";"c";"d"] 5)
 
 let test_slice _ =
+  assert_equal [] (Lib_ocaml_problems.slice [] 2 6);
   assert_equal ["c"; "d"; "e"; "f"; "g"] (Lib_ocaml_problems.slice ["a";"b";"c";"d";"e";"f";"g";"h";"i";"j"] 2 6)
 
 let test_rotate _ =

@@ -1,0 +1,11 @@
+opam-version: "2.0"
+
+synopsis: "Bisect_ppx + Dune starter repo"
+homepage: "https://github.com/bkrmendy/99_ocaml_problems"
+bug-reports: "https://github.com/bkrmendy/99_ocaml_problems/issues"
+
+depends: [
+  "bisect_ppx" {dev & >= "2.5.0"}
+  "dune" {>= "2.7.0"}
+  "ocaml"
+]

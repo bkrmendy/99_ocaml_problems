@@ -1,2 +1,3 @@
 (library
- (name Lib_ocaml_problems))
+ (name Lib_ocaml_problems)
+ (instrumentation (backend bisect_ppx)))
