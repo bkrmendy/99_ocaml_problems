@@ -28,6 +28,7 @@ module Lib_ocaml_problems : sig
   val slice : 'a list -> int -> int -> 'a list
   val rotate : 'a list -> int -> 'a list
   val remove_at : 'a list -> int -> 'a list
+  val insert_at : 'a -> int -> 'a list -> 'a list
 end = 
 struct
   let rec last lst = 
@@ -201,5 +202,9 @@ struct
         | (_::rest, 0) -> rest
         | (head::rest, _) -> head::(remove_at rest (idx - 1))
     
-        
+    let rec insert_at elem idx lst =
+      match (lst, idx) with
+        | (_, 0) -> elem::lst
+        | ([], _) -> []
+        | (head::rest, _) -> head::(insert_at elem (idx - 1) rest)
 end

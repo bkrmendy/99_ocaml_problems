@@ -150,6 +150,14 @@ let test_remove_at _ =
   assert_equal [2] (Lib_ocaml_problems.remove_at [1; 2] 0);
   assert_equal [1; 3] (Lib_ocaml_problems.remove_at [1; 2; 3] 1);
   assert_equal ["a"; "c"; "d"] (Lib_ocaml_problems.remove_at ["a";"b";"c";"d"] 1)
+
+let test_insert_at _ =
+  assert_equal [] (Lib_ocaml_problems.insert_at 1 1 []);
+  assert_equal [1] (Lib_ocaml_problems.insert_at 1 0 []);
+  assert_equal [1;5;2] (Lib_ocaml_problems.insert_at 5 1 [1; 2]);
+  assert_equal ["a"; "alfa"; "b"; "c"; "d"] (Lib_ocaml_problems.insert_at "alfa" 1 ["a";"b";"c";"d"]);
+  assert_equal ["a"; "b"; "c"; "alfa"; "d"] (Lib_ocaml_problems.insert_at "alfa" 3 ["a";"b";"c";"d"]);
+  assert_equal ["a"; "b"; "c"; "d"; "alfa"] (Lib_ocaml_problems.insert_at "alfa" 4 ["a";"b";"c";"d"])
   
 let tests = 
   "Unit tests for lists" >::: [
@@ -171,5 +179,6 @@ let tests =
     "test_split" >:: test_split;
     "test_slice" >:: test_slice;
     "test_rotate" >:: test_rotate;
-    "test_remove_at" >:: test_remove_at
+    "test_remove_at" >:: test_remove_at;
+    "test_insert_at" >:: test_insert_at
   ]
