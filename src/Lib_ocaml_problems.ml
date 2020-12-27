@@ -29,6 +29,8 @@ module Lib_ocaml_problems : sig
   val rotate : 'a list -> int -> 'a list
   val remove_at : 'a list -> int -> 'a list
   val insert_at : 'a -> int -> 'a list -> 'a list
+  val range : int -> int -> int list
+  val extract : int -> 'a list -> 'a list list
 end = 
 struct
   let rec last lst = 
@@ -207,4 +209,18 @@ struct
         | (_, 0) -> elem::lst
         | ([], _) -> []
         | (head::rest, _) -> head::(insert_at elem (idx - 1) rest)
+
+    let rec range from until = 
+      if from = until then [until]
+      else if from > until then from::(range (from - 1) until)
+      else from::(range (from + 1) until)
+
+    let rec extract n lst =
+      if n < 1 then [[]]
+      else match lst with
+        | [] -> []
+        | head::rest ->
+          let with_h = List.map (fun l -> head :: l) (extract (n-1) rest) in
+          let without_h = extract n rest in
+            with_h @ without_h;;
 end

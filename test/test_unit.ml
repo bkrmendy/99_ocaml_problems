@@ -160,6 +160,20 @@ let test_insert_at _ =
   assert_equal ["a"; "alfa"; "b"; "c"; "d"] (Lib_ocaml_problems.insert_at "alfa" 1 ["a";"b";"c";"d"]);
   assert_equal ["a"; "b"; "c"; "alfa"; "d"] (Lib_ocaml_problems.insert_at "alfa" 3 ["a";"b";"c";"d"]);
   assert_equal ["a"; "b"; "c"; "d"; "alfa"] (Lib_ocaml_problems.insert_at "alfa" 4 ["a";"b";"c";"d"])
+
+let test_range _ = 
+  assert_equal [1] (Lib_ocaml_problems.range 1 1);
+  assert_equal [1; 2] (Lib_ocaml_problems.range 1 2);
+  assert_equal [1; 2; 3] (Lib_ocaml_problems.range 1 3);
+  assert_equal [2; 1] (Lib_ocaml_problems.range 2 1);
+  assert_equal [3; 2; 1] (Lib_ocaml_problems.range 3 1);
+  assert_equal [4; 5; 6; 7; 8; 9] (Lib_ocaml_problems.range 4 9);
+  assert_equal [9; 8; 7; 6; 5; 4] (Lib_ocaml_problems.range 9 4)
+
+let test_extract _ =
+  assert_equal
+    [["a"; "b"]; ["a"; "c"]; ["a"; "d"]; ["b"; "c"]; ["b"; "d"]; ["c"; "d"]]
+    (Lib_ocaml_problems.extract 2 ["a";"b";"c";"d"])
   
 let tests = 
   "Unit tests for lists" >::: [
@@ -182,5 +196,7 @@ let tests =
     "test_slice" >:: test_slice;
     "test_rotate" >:: test_rotate;
     "test_remove_at" >:: test_remove_at;
-    "test_insert_at" >:: test_insert_at
+    "test_insert_at" >:: test_insert_at;
+    "test_range" >:: test_range;
+    "test_extract" >:: test_extract
   ]
